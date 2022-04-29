@@ -1,21 +1,22 @@
-const Comment = require('./Comment')
-const Score = require('./Score')
-const Favorite = require('./Favorite')
-const User = require('./User')
+"use strict"
 
-module.exports = class Movie {
-    constructor(name, director, year, usersWatched = [], comments = [], scores = [], favorites = []) {
-      this.name = name;
-      this.director = director;
-      this.year = year;
-      this.usersWatched = usersWatched;
-      this.comments = comments;
-      this.scores = scores;
-      this.favorites = favorites;
-    }
+const mongoose = require("mongoose");
 
-    static create({name, director, year, usersWatched, comments, scores, favorites}){
-      let movie = new Movie(name, director, year, usersWatched, comments, scores, favorites);
-      return movie;
-    }
-  };
+const MovieSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  trailer:{//TODO: Implement imdb api here to fetch the trailer.
+    type:String,
+    default:"https://www.youtube.com/watch?v=pKwQlm-wldA"
+  },
+});
+
+//Auto-populate
+MovieSchema.plugin(require("mongoose-autopopulate"));
+
+const MovieModel = mongoose.model("Movie", MovieSchema);
+
+module.exports = MovieModel;

@@ -1,17 +1,28 @@
-const User = require('./User')
+"use strict"
 
+const mongoose = require("mongoose");
 
-module.exports = class Event{
-    constructor(name, content, date, attendees = []) {
-      this.name = name;
-      this.content = content;
-      this.date = date;
-      this.attendees = attendees
+const EventSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+  }, 
+  attendees: [{
+    type:mongoose.SchemaTypes.ObjectId,
+    ref:'User',
+    autopopulate:{
+      maxDepth:1 //prevent population looping.
     }
+  }],
+  content:{
+    type:String
+  }
+});
 
-    static create({name, content, date, attendees}){
-      let event = new Event(name, content, date, attendees)
-      return event;
-    }
-  };
-  
+//Auto-populate
+EventSchema.plugin(require("mongoose-autopopulate"));
+
+const EventModel = mongoose.model("Event", EventSchema);
+
+module.exports = EventModel;

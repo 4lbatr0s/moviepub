@@ -1,21 +1,28 @@
-const Sentiment = require('sentiment');
-const sentiment = new Sentiment(); //sentiment analyzer
+"use strict"
 
+const mongoose = require("mongoose");
 
-//modules
+const CommentSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  user:{ //this is a user(ref), and just push its _id value.
+    type: mongoose.SchemaTypes.ObjectId,
+    ref:'User'
+  },
+  content:{
+    type:String,
+    required:true,
+    minlength:1 //prevent empty.
+  }
 
+});
 
-module.exports = class Comment{
-    constructor(user, comment, movie) {
-      this.user = user;
-      this.comment = comment;
-      this.commentSentimentAnalysisScore = sentiment.analyze(this.comment);
-      this.movie = movie; 
-      this.createdAt = new Date().toString();
-    }
+//Auto-populate
+CommentSchema.plugin(require("mongoose-autopopulate"));
 
-    //just get user,comment,movie properties of whatever is given as a parameter.
-    static create({user, comment, movie}){
-      return new Comment(user, comment, movie)
-    }
-  };
+const CommentModel = mongoose.model("Comment", CommentSchema);
+
+module.exports = CommentModel;

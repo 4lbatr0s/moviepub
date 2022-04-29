@@ -1,17 +1,32 @@
-const Event = require('./Event');
-const Movie = require('./Movie');
-const User = require('./User');
+"use strict"
 
-module.exports = class MovieNight extends Event{
-    constructor(name, content, date, attendees =[], movies = []) {
-      super(name, content, date, attendees);
-      this.movies = movies
-    }
+const mongoose = require("mongoose");
 
-    static create({name, content, date, attendees}){
-      let movieNight = new MovieNight(name, content, date, attendees) //TODO:there we take attendees or movies as json objects
-      movieNight.attendees = attendees.map(User.create) //TODO: then here we create attendee and movie types from this objects.
-      movieNight.movies = attendees.map(Movie.create)
-      return movieNight;
+const MovieNightSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  attendees: [{
+    type:mongoose.SchemaTypes.ObjectId,
+    ref:'User',
+    autopopulate:{
+      maxDepth:1 //prevent population looping.
     }
-};
+  }],
+  movies: [{
+    type:mongoose.SchemaTypes.ObjectId,
+    ref:'Movie',
+    autopopulate:{
+      maxDepth:1 //prevent population looping.
+    }
+  }],
+});
+
+//Auto-populate
+MovieNightSchema.plugin(require("mongoose-autopopulate"));
+
+const MovieNightModel = mongoose.model("MovieNight", MovieNightSchema);
+
+module.exports = MovieNightModel;

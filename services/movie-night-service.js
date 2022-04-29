@@ -1,10 +1,17 @@
-const BaseService = require('./base-service');
-const MovieNightModel = require('./../models/MovieNight')
+const BaseService = require("./base-service");
+const MovieNightModel = require("../models/MovieNight")
 
 class MovieNightService extends BaseService{
-    constructor(){
-        super(MovieNightModel, `${__dirname}/../databases/movie-night-db.json`);
-    }
+    //TODO:you dont need to use constructor anymore.
+    // constructor(){
+    //     super(MovieNightModel)
+    // }
+    model = MovieNightModel //this line and line from 6 to 8 are same.
+
+    // async saveMovieNightModel() {
+    //     await this.model.save();
+    //   }
+
 }
 
-module.exports = new MovieNightService();
+module.exports = new MovieNightService()
