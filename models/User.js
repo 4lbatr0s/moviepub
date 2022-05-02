@@ -22,6 +22,13 @@ const UserSchema = new mongoose.Schema({
       maxDepth:1 //prevent population looping.
     }
   }],
+  groups: [{
+    type:mongoose.SchemaTypes.ObjectId,
+    ref:'Group',
+    autopopulate:{
+      maxDepth:1 //prevent population looping.
+    }
+  }],
   favorites: [{
     type:mongoose.SchemaTypes.ObjectId,
     ref:'Favorite',
@@ -44,6 +51,8 @@ const UserSchema = new mongoose.Schema({
     }
   }],
 });
+
+
 
 //Auto-populate
 UserSchema.plugin(require("mongoose-autopopulate"));

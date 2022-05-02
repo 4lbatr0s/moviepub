@@ -15,7 +15,7 @@ const MovieNightSchema = new mongoose.Schema({
       maxDepth:1 //prevent population looping.
     }
   }],
-  movies: [{
+  movies: [{//TODO: pass only the id of the movie.
     type:mongoose.SchemaTypes.ObjectId,
     ref:'Movie',
     autopopulate:{

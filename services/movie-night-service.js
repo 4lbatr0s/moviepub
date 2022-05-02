@@ -12,6 +12,14 @@ class MovieNightService extends BaseService{
     //     await this.model.save();
     //   }
 
+    async bringMovieNightsWithMultipleMovies(){
+        const movies = await this.model.find({
+            'movies.1':{"exists":true}
+        })
+
+        return movies
+    }
+
 }
 
 module.exports = new MovieNightService()

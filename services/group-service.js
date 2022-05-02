@@ -12,6 +12,19 @@ class GroupService extends BaseService{
     //     await this.model.save();
     //   }
 
+    async groupsWithAttendees(){
+        const groups = await this.model.find({
+            'attendees.0': {"$exists":true}     
+        })
+        return groups
+    }
+    
+    async groupsWithEvents(){
+        const groups = await this.model.find({
+            'events.0': {"$exists":true}     
+        })
+        return groups
+    }
 }
 
 module.exports = new GroupService()

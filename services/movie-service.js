@@ -8,10 +8,27 @@ class MovieService extends BaseService{
     // }
     model = MovieModel //this line and line from 6 to 8 are same.
 
-    // async saveMovieModel() {
-    //     await this.model.save();
-    //   }
+    async moviesWithScores(){
+        const movies = await this.model.find({
+            'scores.0': {"$exists":true}     
+        })
+        return movies
+    }
 
+    async moviesWithComments(){
+        const movies = await this.model.find({
+            'comments.0': {"$exists":true}     
+        })
+        return movies
+    }
+
+    async moviesWithFavorites(){
+        const movies = await this.model.find({
+            'favorites.0': {"$exists":true}     
+        })
+        return movies
+    }
+    
 }
 
 module.exports = new MovieService()
